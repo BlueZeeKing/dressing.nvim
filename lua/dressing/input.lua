@@ -122,7 +122,7 @@ local function confirm(text)
 end
 
 local function on_text_changed()
-    if not type(context.opts.length) == "number" then
+    if not (type(context.opts.length) == "number") then
         return
     end
 
