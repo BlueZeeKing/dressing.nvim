@@ -125,7 +125,7 @@ local function on_text_changed()
     local bufnr = vim.api.nvim_win_get_buf(context.winid)
     local text = vim.api.nvim_buf_get_lines(bufnr, 0, 1, true)[1]
 
-    if type(context.opts.length) == "number" and context.opts.length <= text.len() then
+    if type(context.opts.length) == "number" and context.opts.length <= string.len(text) then
         M.confirm()
     end
 end
