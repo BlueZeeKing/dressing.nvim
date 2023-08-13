@@ -250,18 +250,9 @@ local function create_or_update_win(config, prompt, opts)
         }
     end
 
-    vim.notify("calc width")
-
-    local opts_prefer_width
-    if type(opts.length) == "number" then
-        opts_prefer_width = opts.width
-    else
-        opts_prefer_width = config.prefer_width
-    end
-
     -- First calculate the desired base width of the modal
     local prefer_width =
-        util.calculate_width(config.relative, opts_prefer_width, config, parent_win)
+        util.calculate_width(config.relative, config.prefer_width, config, parent_win)
     -- Then expand the width to fit the prompt and default value
     prefer_width = math.max(prefer_width, 4 + vim.api.nvim_strwidth(prompt))
     if opts.default then
@@ -271,7 +262,12 @@ local function create_or_update_win(config, prompt, opts)
     local width = util.calculate_width(config.relative, prefer_width, config, parent_win)
     winopt.row = util.calculate_row(config.relative, 1, parent_win)
     winopt.col = util.calculate_col(config.relative, width, parent_win)
-    winopt.width = width
+    if type(opts.width) == "number" then
+        winopt.width = opts.width
+    else
+        winopt.width = width
+    end
+
 
     if win_conf and config.relative == "cursor" then
         -- If we're cursor-relative we should actually not adjust the row/col to
